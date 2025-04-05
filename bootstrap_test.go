@@ -11,14 +11,19 @@ import (
 	gsvtesting "github.com/marcoshack/gosvc/internal/testing"
 )
 
+var (
+	testArgs = []string{"-c", "internal/testing/data/config.json"}
+)
+
 func TestBootstrap_LoadsConfiguration(t *testing.T) {
 	bs, err := gosvc.NewBootstrap[gsvtesting.TestConfigType](context.Background(), gosvc.BootstrapInput{
-		Name:           "TestService",
-		ConfigFileName: "internal/testing/data/config.json",
+		ServiceName: "TestService",
+		Args:        testArgs,
 	})
 	require.NoError(t, err)
 	require.NotNil(t, bs)
 	require.NotNil(t, bs.Config)
+
 	assert.Equal(t, "value1", bs.Config.Attr1)
 	assert.Equal(t, 123, bs.Config.Attr2)
 	assert.Equal(t, "subValue1", bs.Config.Attr5.SubAttr1)

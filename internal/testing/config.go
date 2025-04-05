@@ -12,6 +12,7 @@ type TestConfigType struct {
 		SubAttr2 int    `json:"subAttr2"`
 	} `json:"attr5"`
 	Attr6 []string `json:"attr6"`
+	Port  int
 }
 
 func (c TestConfigType) Validate() error {
@@ -22,4 +23,16 @@ func (c TestConfigType) Validate() error {
 		return fmt.Errorf("Attr2 must be greater than 0")
 	}
 	return nil
+}
+
+func (c TestConfigType) IsValid() bool {
+	return c.Validate() == nil
+}
+
+func (c TestConfigType) GetLogLevel() string {
+	return "debug"
+}
+
+func (c TestConfigType) GetLogFileName() string {
+	return ""
 }

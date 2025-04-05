@@ -11,9 +11,9 @@ type LoadFromFileInput struct {
 	Filename string
 }
 
-func LoadFromFile[T Validatable](input *LoadFromFileInput) (T, error) {
+func LoadFromFile[ConfigType ServiceConfig](input *LoadFromFileInput) (ConfigType, error) {
 	//#nosec: G304 (CWE-22): Potential file inclusion via variable
-	var config T
+	var config ConfigType
 	configFile, err := os.Open(input.Filename)
 	if err != nil {
 		return config, fmt.Errorf("error opening config file: %s", err.Error())
