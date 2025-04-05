@@ -1,0 +1,14 @@
+{
+    "attr1": "value1",
+    "attr2": 123,
+    "attr3": true,
+    "attr4": 45.67,
+    "attr5": {
+        "subAttr1": "subValue1",
+        "subAttr2": 789
+    },
+    "attr6": [
+        "listValue1",
+        "listValue2"
+    ]
+}
