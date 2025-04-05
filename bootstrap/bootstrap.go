@@ -1,4 +1,4 @@
-package gosvc
+package bootstrap
 
 import (
 	"context"
@@ -21,12 +21,12 @@ type Bootstrap[ConfigType config.ServiceConfig] struct {
 	Logger         zerolog.Logger
 }
 
-type BootstrapInput struct {
+type Input struct {
 	ServiceName string
 	Args        []string
 }
 
-func NewBootstrap[ConfigType config.ServiceConfig](ctx context.Context, input BootstrapInput) (*Bootstrap[ConfigType], error) {
+func New[ConfigType config.ServiceConfig](ctx context.Context, input Input) (*Bootstrap[ConfigType], error) {
 	awsConfig, err := awsconfig.LoadDefaultConfig(ctx)
 	if err != nil {
 		log.Ctx(ctx).Fatal().Err(err).Msg("failed to create AWS config")

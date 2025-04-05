@@ -6,12 +6,12 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/marcoshack/gosvc"
+	"github.com/marcoshack/gosvc/bootstrap"
 	"github.com/marcoshack/gosvc/internal/config"
 )
 
 func main() {
-	bs, err := gosvc.NewBootstrap[config.DefaultServiceConfig](context.Background(), gosvc.BootstrapInput{
+	bs, err := bootstrap.New[config.DefaultServiceConfig](context.Background(), bootstrap.Input{
 		ServiceName: "gosvcsample",
 		Args:        os.Args,
 	})
