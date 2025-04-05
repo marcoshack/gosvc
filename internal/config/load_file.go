@@ -2,9 +2,10 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
+
+	"github.com/pkg/errors"
 )
 
 type LoadFromFileInput struct {
@@ -16,21 +17,21 @@ func LoadFromFile[ConfigType ServiceConfig](input *LoadFromFileInput) (ConfigTyp
 	var config ConfigType
 	configFile, err := os.Open(input.Filename)
 	if err != nil {
-		return config, fmt.Errorf("error opening config file: %s", err.Error())
+		return config, errors.Wrap(err, "error opening config file")
 	}
 
 	configBytes, err := io.ReadAll(configFile)
 	if err != nil {
-		return config, fmt.Errorf("error reading config file: %s", err.Error())
+		return config, errors.Wrap(err, "error reading config file")
 	}
 
 	err = json.Unmarshal(configBytes, &config)
 	if err != nil {
-		return config, fmt.Errorf("error parsing config file: %s", err.Error())
+		return config, errors.Wrap(err, "error parsing config file")
 	}
 
 	if err := config.Validate(); err != nil {
-		return config, fmt.Errorf("invalid configuration: %s", err.Error())
+		return config, errors.Wrap(err, "error validating config file")
 	}
 
 	return config, nil

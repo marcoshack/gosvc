@@ -3,10 +3,10 @@ package config
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appconfigdata"
+	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 )
 
@@ -30,19 +30,19 @@ func LoadFromAppConfig[ConfigType ServiceConfig](ctx context.Context, input *Loa
 		ConfigurationProfileIdentifier: aws.String(input.ConfigurationProfileName),
 	})
 	if err != nil {
-		return config, fmt.Errorf("failed to start config session on AppConfig: %s", err.Error())
+		return config, errors.Wrap(err, "failed to start config session on AppConfig")
 	}
 
 	getConfigOutput, err := appConfigClient.GetLatestConfiguration(ctx, &appconfigdata.GetLatestConfigurationInput{
 		ConfigurationToken: configSessionOutput.InitialConfigurationToken,
 	})
 	if err != nil {
-		return config, fmt.Errorf("failed to get latest config from AppConfig: %s", err.Error())
+		return config, errors.Wrap(err, "failed to get latest config from AppConfig")
 	}
 
 	err = json.Unmarshal(getConfigOutput.Configuration, &config)
 	if err != nil {
-		return config, fmt.Errorf("failed to unmarshal AppConfig configuration: %s", err.Error())
+		return config, errors.Wrap(err, "failed to unmarshal AppConfig configuration")
 	}
 
 	return config, nil
