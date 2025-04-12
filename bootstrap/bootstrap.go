@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
@@ -18,7 +19,7 @@ type Bootstrap[ConfigType config.ServiceConfig] struct {
 	Config         ConfigType
 	ConfigFileName string
 	Logger         zerolog.Logger
-	AWSConfig      awsconfig.Config
+	AWSConfig      aws.Config
 }
 
 type Input struct {

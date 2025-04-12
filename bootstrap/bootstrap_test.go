@@ -18,6 +18,7 @@ var (
 func TestBootstrap_LoadsConfiguration(t *testing.T) {
 	bs, err := bootstrap.New[gsvtesting.TestConfigType](context.Background(), bootstrap.Input{
 		ServiceName: "TestService",
+		AWSRegion:   "us-east-1",
 		Args:        testArgs,
 	})
 	require.NoError(t, err)
