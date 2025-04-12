@@ -7,21 +7,23 @@ type ServiceConfig interface {
 	GetLogFileName() string
 }
 
-type DefaultServiceConfig struct {
+type SampleServiceConfig struct {
+	Host string
+	Port int
 }
 
-func (c DefaultServiceConfig) Validate() error {
+func (c SampleServiceConfig) Validate() error {
 	return nil
 }
 
-func (c DefaultServiceConfig) IsValid() bool {
-	return true
+func (c SampleServiceConfig) IsValid() bool {
+	return c.Validate() == nil
 }
 
-func (c DefaultServiceConfig) GetLogLevel() string {
+func (c SampleServiceConfig) GetLogLevel() string {
 	return "debug"
 }
 
-func (c DefaultServiceConfig) GetLogFileName() string {
+func (c SampleServiceConfig) GetLogFileName() string {
 	return ""
 }

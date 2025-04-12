@@ -9,13 +9,26 @@ import (
 	"github.com/pkg/errors"
 )
 
-func LoadConfig[ConfigType ServiceConfig](ctx context.Context, awsConfig aws.Config, configFilename *string) (ConfigType, error) {
+type LoadConfigInput struct {
+	AWSSDKConfig   aws.Config
+	ConfigFileName *string
+	DefaultConfig  ServiceConfig
+}
+
+func LoadConfig[ConfigType ServiceConfig](ctx context.Context, input *LoadConfigInput) (ConfigType, error) {
 	var c ConfigType
 	var err error
 
+	if input.DefaultConfig != nil {
+		c = input.DefaultConfig.(ConfigType)
+	}
+
 	// try to load configuration from file
-	if *configFilename != "" {
-		c, err = LoadFromFile[ConfigType](&LoadFromFileInput{Filename: *configFilename})
+	if *input.ConfigFileName != "" {
+		c, err = LoadFromFile[ConfigType](&LoadFromFileInput{
+			FileName:      *input.ConfigFileName,
+			DefaultConfig: input.DefaultConfig,
+		})
 		if err != nil {
 			return c, errors.Wrap(err, "failed to load configuration from file")
 		}
@@ -27,7 +40,7 @@ func LoadConfig[ConfigType ServiceConfig](ctx context.Context, awsConfig aws.Con
 	configProfile := os.Getenv("CONFIG_PROFILE")
 	if !c.IsValid() && stageName != "" && appName != "" && configProfile != "" {
 		c, err = LoadFromAppConfig[ConfigType](ctx, &LoadFromAppConfigInput{
-			AWSConfig:                awsConfig,
+			AWSConfig:                input.AWSSDKConfig,
 			ApplicationName:          appName,
 			ConfigurationProfileName: configProfile,
 			EnvironmentName:          stageName,

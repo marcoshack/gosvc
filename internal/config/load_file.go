@@ -9,13 +9,18 @@ import (
 )
 
 type LoadFromFileInput struct {
-	Filename string
+	FileName      string
+	DefaultConfig ServiceConfig
 }
 
 func LoadFromFile[ConfigType ServiceConfig](input *LoadFromFileInput) (ConfigType, error) {
 	//#nosec: G304 (CWE-22): Potential file inclusion via variable
 	var config ConfigType
-	configFile, err := os.Open(input.Filename)
+	if input.DefaultConfig != nil {
+		config = input.DefaultConfig.(ConfigType)
+	}
+
+	configFile, err := os.Open(input.FileName)
 	if err != nil {
 		return config, errors.Wrap(err, "error opening config file")
 	}

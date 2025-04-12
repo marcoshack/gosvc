@@ -12,10 +12,10 @@ import (
 )
 
 var (
-	testArgs = []string{"-c", "../internal/testing/data/config.json"}
+	testArgs = []string{"program_filepath", "-c", "../internal/testing/data/config.json"}
 )
 
-func TestBootstrap_LoadsConfiguration(t *testing.T) {
+func TestBootstrap_New_LoadsConfiguration(t *testing.T) {
 	bs, err := bootstrap.New[gsvtesting.TestConfigType](context.Background(), bootstrap.Input{
 		ServiceName: "TestService",
 		AWSRegion:   "us-east-1",

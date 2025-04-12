@@ -6,8 +6,8 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${fileDirname}",
-            "args": ["-h"],
+            "program": "${workspaceFolder}/cmd/gosvcsample",
+            "args": ["-c", "${workspaceFolder}/cmd/gosvcsample/config/sample_config.json"],
         }
     ]
 }

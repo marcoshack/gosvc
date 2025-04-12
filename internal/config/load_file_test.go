@@ -11,7 +11,7 @@ import (
 )
 
 func TestConfig_LoadFromfile(t *testing.T) {
-	config, err := config.LoadFromFile[gsvtesting.TestConfigType](&config.LoadFromFileInput{Filename: "../testing/data/config.json"})
+	config, err := config.LoadFromFile[gsvtesting.TestConfigType](&config.LoadFromFileInput{FileName: "../testing/data/config.json"})
 	require.NoError(t, err)
 	require.NotNil(t, config)
 	assert.Equal(t, "value1", config.Attr1)

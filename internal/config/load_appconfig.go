@@ -15,6 +15,7 @@ type LoadFromAppConfigInput struct {
 	ApplicationName          string
 	ConfigurationProfileName string
 	EnvironmentName          string
+	DefaultConfig            ServiceConfig
 }
 
 // LoadFromAppConfig loads the jarbas configuration from AWS AppConfig.
@@ -23,6 +24,9 @@ func LoadFromAppConfig[ConfigType ServiceConfig](ctx context.Context, input *Loa
 	appConfigClient := appconfigdata.NewFromConfig(input.AWSConfig)
 
 	var config ConfigType
+	if input.DefaultConfig != nil {
+		config = input.DefaultConfig.(ConfigType)
+	}
 
 	configSessionOutput, err := appConfigClient.StartConfigurationSession(ctx, &appconfigdata.StartConfigurationSessionInput{
 		ApplicationIdentifier:          aws.String(input.ApplicationName),
